@@ -7,13 +7,12 @@ CPPFLAGS = -I$(LIBS_DIR)/
 
 
 %.o: $(SRC_DIR)/%.cpp
-	$(CC) $< -o $(OUTPUT_DIR)/$(@) $(CPPFLAGS)
+	$(CC) $< -o $(OUTPUT_DIR)/$@ $(CPPFLAGS)
 
-server: $(OUTPUT_DIR)/server.o
-	make server.o
+server: server.o
 	$(CC) $(SRC_DIR)/$@.cpp -o $(BIN_DIR)/$@.exc $(CPPFLAGS) -lpthread
 
-client: $(OUTPUT_DIR)/client.o
+client: client.o
 	make client.o
 	$(CC) $(SRC_DIR)/$@.cpp -o $(BIN_DIR)/$@.exc $(CPPFLAGS)
 
@@ -28,11 +27,16 @@ start_server:
 start_client:
 	$(BIN_DIR)/client.exc
 
+dir_creator:
+	mkdir .outs bin
+
 install_server:
+	make dir_creator
 	make clean
 	make server
 
 install_client:
+	make dir_creator
 	make clean
 	make client
 
