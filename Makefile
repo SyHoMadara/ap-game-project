@@ -6,7 +6,7 @@ OUTPUT_DIR = ./.outs
 	$(CC) $< -o $(OUTPUT_DIR)/$(@) $(CPPFLAGS)
 
 main: main.o
-	$(CC) main.cpp -o $(@) $(CPPFLAGS)
+	$(CC) main.cpp -o main.exc $(CPPFLAGS)
 
 start:
 	./main
