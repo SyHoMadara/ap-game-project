@@ -3,4 +3,5 @@ project(ap_project)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(ap_project src/server.cpp src/client.cpp libs/map.h)
+add_executable(Server src/server.cpp src/client.cpp libs/map.h)
+add_executable(client src/client.cpp libs/map.h)
