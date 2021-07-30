@@ -5,7 +5,9 @@ using namespace std;
 
 
 int main() {
-    cout << "Hello, World!" << std::endl;
+    httplib::Client client("http://127.0.0.1:8000");
+    auto res = client.Get("/hi");
+    cout << res->body << "status : " << res->status << '\n';
 
     return 0;
 
