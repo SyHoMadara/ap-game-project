@@ -1,12 +1,34 @@
 CC = g++ -std=c++14
-CPPFLAGS = -I./libs
 OUTPUT_DIR = ./.outs
+LIBS_DIR = ./libs
+BIN_DIR = ./bin
+CPPFLAGS = -I.$(LIBS_DIR)
+
 
 %.o: %.cpp
 	$(CC) $< -o $(OUTPUT_DIR)/$(@) $(CPPFLAGS)
 
-main: main.o
-	$(CC) main.cpp -o main.exc $(CPPFLAGS)
+server: server.cpp
+	$(CC) $@.cpp -o $(BIN_DIR)/$@.exc $(CPPFLAGS) -lpthread
 
-start:
-	./main
+client: client.cpp
+	$(CC) $@.cpp -o $(BIN_DIR)/$@.exc $(CPPFLAGS)
+
+clean:
+	rm -rf .outs/* $(BIN_DIR)/*.exc
+clear:
+	make clean
+
+start_server:
+	$(BIN_DIR)/server.exc
+
+start_client:
+	$(BIN_DIR)/client.exc
+
+install_server:
+	make clean
+	make server
+
+install_client:
+	make clean
+	make client
