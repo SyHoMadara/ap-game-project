@@ -4889,6 +4889,7 @@ static WSInit wsinit_;
     inline bool Server::listen_after_bind() { return listen_internal(); }
 
     inline bool Server::listen(const char *host, int port, int socket_flags) {
+        std::cout << "server start at " << host << ":" << port << '\n';
         return bind_to_port(host, port, socket_flags) && listen_internal();
     }
 

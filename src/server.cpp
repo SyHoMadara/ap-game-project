@@ -1,9 +1,10 @@
 #include <iostream>
 #include "../libs/httplib.h"
+#include "handler/FileReader.h"
 
 using namespace std;
 
-const char *const domain = "http://127.0.0.1";
+const char *const domain = "127.0.0.1";
 const string port_str = "8000";
 const long long port = 8000;
 
@@ -19,11 +20,13 @@ int main() {
     httplib::Server server;
 
     // request and response.
-    server.Get("/hi", [](const httplib::Request &request, httplib::Response response) {
+    server.Get("/hi", [](const httplib::Request &request, httplib::Response &response) {
         cout << "get method with /hi" << '\n';
-        response.set_content("Get method accepted", "text/plain");
-        response.status = HTTP_404_NOT_FOUND;
+        response.set_content("hihi", "text/html");
     });
+//    server.Get("/hi", [html_body](const httplib::Request &request, httplib::Response &response) {
+//        response.set_content(html_body, "text/html");
+//    });
 
 
     server.listen(domain, port);
