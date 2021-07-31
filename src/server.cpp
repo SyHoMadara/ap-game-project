@@ -86,15 +86,18 @@ void startGame(bool isGameStart, int numberOfPlayers, string players[], httplib:
         svr.Get(update, [&](const httplib::Request &req, httplib::Response &res) {
             // send current board.
             /*
-             n
-             1 2
-             2 3
+             n\n
+             1 2\n
+             2 3\n
 
 
              4
 
 
              */
+            string response;
+            res.body = response;
+            res.status = HTTP_200_OK;
 
         });
         cout << "Player " << turn % numberOfPlayers + 1 << "is your turn." << endl;
