@@ -21,6 +21,7 @@ public:
     char **move_right(char **mat, char player);
     bool valid_wall(char **mat, char player, string move_like);
     char **wall(char **mat, char player, string move_like);
+    string JsonConvertToBoard();
 };
 
 Board::Board(int num_of_players)
@@ -266,6 +267,7 @@ char **Board::wall(char **mat, char player, string move_like)
     {
         if (valid_wall(mat, player, move_like))
         {
+            mat[arr[0] ][arr[1]] = 'w';
             mat[arr[0] + 1][arr[1]] = 'w';
             mat[arr[0] - 1][arr[1]] = 'w';
             return mat;
@@ -280,6 +282,7 @@ char **Board::wall(char **mat, char player, string move_like)
     {
         if (valid_wall(mat, player, move_like))
         {
+            mat[arr[0]][arr[1] + 1] = 'w';
             mat[arr[0]][arr[1] + 1] = 'w';
             mat[arr[0]][arr[1] - 1] = 'w';
             return mat;
