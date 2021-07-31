@@ -69,9 +69,9 @@ bool Command::execute() {
         location.first = std::stoi(number[0]);
         location.second = std::stoi(number[1]);
         if(is_up){
-            return board->wall(board->mat,playerNumber,"up");
+            return board->wall(board->playerNumber,"up");
         } else {
-            return board->wall(board->mat,playerNumber,"left") ;
+            return board->wall(board->playerNumber,"left") ;
         }
 
 
