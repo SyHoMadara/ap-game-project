@@ -38,12 +38,16 @@ bool Command::execute() {
     // you can access to current board by Board::currentBoard
     Board board = (Board &&) Board::currentBoard;
     if (command == "up"){
+        board.move_up() ;
 
     } else if (command == "down") {
+        board.move_down() ;
 
     } else if (command == "right") {
+        board.move_right() ;
 
     } else if (command == "left") {
+        board.move_left() ;
 
     } else {  // is set wall command : wall(5,10)up or wall(5,10)left
         pair<int, int> location;
