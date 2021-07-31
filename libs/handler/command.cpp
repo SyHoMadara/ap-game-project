@@ -39,7 +39,6 @@ bool Command::execute() {
     Board board = (Board &&) Board::currentBoard;
     if (command == "up"){
 
-
     } else if (command == "down") {
 
     } else if (command == "right") {
@@ -48,12 +47,16 @@ bool Command::execute() {
 
     } else {  // is set wall command : wall(5,10)up or wall(5,10)left
         pair<int, int> location;
+        bool is_up = false;
         int endInd = 0;
         for (int i = 5; i < command.size(); ++i) {
             if (command[i] == ')') {
                 endInd = i - 1;
                 break;
             }
+        }
+        if (command[endInd+2]== 'u'){
+            is_up = true;
         }
         auto number = split(command.substr(5,endInd), ",");
         location.first = std::stoi(number[0]);
