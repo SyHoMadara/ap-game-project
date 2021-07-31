@@ -11,7 +11,7 @@ private:
     char **mat;
 
 public:
-    static Board board;
+    static Board currentBoard;
 
     Board(int num_of_players);
 

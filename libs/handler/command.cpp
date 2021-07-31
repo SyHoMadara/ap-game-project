@@ -1,5 +1,6 @@
 #include "iostream"
 #include "command.h"
+#include "map.h"
 
 string Command::commands[] = {"up","down","right","left"};
 regex Command::wallRegex(R"(wall\((\d+),(\d+)\)((right)|(up)))");;
@@ -34,7 +35,10 @@ bool Command::isValid() {
 
 bool Command::execute() {
     if (!is_valid) return false;
+    // you can access to current board by Board::currentBoard
+    Board board = (Board &&) Board::currentBoard;
     if (command == "up"){
+
 
     } else if (command == "down") {
 

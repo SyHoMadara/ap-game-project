@@ -1,7 +1,7 @@
 #include "iostream"
 #include "map.h"
 
-Board Board::board(4);
+Board Board::currentBoard(4);
 
 Board::Board(int num_of_players) {
     this->num_of_players = num_of_players;
