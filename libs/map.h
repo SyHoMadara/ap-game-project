@@ -25,19 +25,20 @@ public:
 
     bool valid_move(char **mat, char player, string move);
 
-    char **move_up(char **mat, char player);
+    bool move_up(char **mat, char player);
 
-    char **move_down(char **mat, char player);
+    bool move_down(char **mat, char player);
 
-    char **move_left(char **mat, char player);
+    bool move_left(char **mat, char player);
 
-    char **move_right(char **mat, char player);
+    bool move_right(char **mat, char player);
 
     bool valid_wall(char **mat, char player, string move_like);
 
-    char **wall(char **mat, char player, string move_like);
+    bool wall(char **mat, char player, string move_like);
 
-    string JsonConvertToBoard();
+    string convertBoardToString();
+    void convertStringToBoard(const string& board);
 
     Board();
 };

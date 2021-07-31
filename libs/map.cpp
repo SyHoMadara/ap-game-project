@@ -1,6 +1,8 @@
 #include "iostream"
 #include "map.h"
 #include <unordered_map>
+#include <sstream>
+#include "vector"
 
 Board Board::currentBoard(4);
 
@@ -225,7 +227,7 @@ char **Board::wall(char **mat, char player, string move_like) {
     return mat;
 }
 
-string Board::JsonConvertToBoard() {
+string Board::convertBoardToString() {
 
     int NumberOfWall = 0;
     for (int i = 0; i < 11; i++) {
@@ -236,39 +238,48 @@ string Board::JsonConvertToBoard() {
         }
 
     }
-    string response("");
-    string response1("");
-    response += to_string( NumberOfWall) +"\n";
-    response1 += to_string( num_of_players) +"\n";
+    string responseWalls;
+    string responsePlayer;
+    responseWalls += to_string(NumberOfWall) + "\n";
+    responsePlayer += to_string(num_of_players) + "\n";
 
-    int NumberOfWall1 = 0;
+    int wallCounter = 0;
     char walls[NumberOfWall][2];
     char players[4][2];
     for (int i = 0; i < 11; i++) {
         for (int j = 0; j < 11; j++) {
             if (mat[i][j] == 'w') {
-                response += to_string(i) +" " + to_string(j) +"\n";
-
-
-                NumberOfWall1++;
+                responseWalls += to_string(i) + " " + to_string(j) + "\n";
+                wallCounter++;
             }
             if (mat[i][j] <= '4' && mat[i][j] >= '1'){
-                string player = "pl";
-                int playerNumber = (int)('4'-mat[i][j]);
+                string player;
                 player += to_string(mat[i][j]);
-                players[playerNumber][0] = i;
-                players[playerNumber][1] = j;
-                response1=player+"\n";
-                response1=to_string(i) +" " + to_string(j) +"\n";
+                responsePlayer += player + " " + to_string(i) + " " + to_string(j) + "\n";
             }
 
         }
 
     }
 
-    unordered_map<string, char**> data;
-    data["walls"] = reinterpret_cast<char **>(&walls);
-    data["players"] = reinterpret_cast<char **>(&players);
 
+}
+
+void Board::convertStringToBoard(const string& board) {
+    stringstream cin(board);
+    int wallNumber;
+    int x,y;
+    cin >> wallNumber;
+    for (int i = 0; i < wallNumber; ++i) {
+        cin >> x >> y;
+        mat[x][y] = 'w';
+    }
+    int m;
+    string player;
+    cin >> m;
+    for (int i = 0; i < m; ++i) {
+        cin >> player >> x >> y;
+        mat[x][y] = player[0];
+    }
 
 }
