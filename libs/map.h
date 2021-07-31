@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
-
+#include <map>
+#include <pair>
 using namespace std;
 
 class Board
@@ -21,7 +22,6 @@ public:
     char **move_right(char **mat, char player);
     bool valid_wall(char **mat, char player, string move_like);
     char **wall(char **mat, char player, string move_like);
-
 };
 
 Board::Board(int num_of_players)
@@ -267,6 +267,7 @@ char **Board::wall(char **mat, char player, string move_like)
     {
         if (valid_wall(mat, player, move_like))
         {
+            mat[arr[0] ][arr[1]] = 'w';
             mat[arr[0] + 1][arr[1]] = 'w';
             mat[arr[0] - 1][arr[1]] = 'w';
             return mat;
@@ -282,6 +283,7 @@ char **Board::wall(char **mat, char player, string move_like)
         if (valid_wall(mat, player, move_like))
         {
             mat[arr[0]][arr[1] + 1] = 'w';
+            mat[arr[0]][arr[1] + 1] = 'w';
             mat[arr[0]][arr[1] - 1] = 'w';
             return mat;
         }
@@ -292,4 +294,54 @@ char **Board::wall(char **mat, char player, string move_like)
         }
     }
     return mat;
+}
+string Board::JsonConvertToBoard()
+{
+
+    map<string  , char[][] > dataw;
+    map<string  , char[2] > datap ;
+    int NumberOfWall = 0 ;
+    for (int i = 0; i < 11; i++)
+    {
+        for (int j = 0; j < 11; j++)
+        {
+            if (  mat[i][j] == 'w'){
+                NumberOfWall ++ ;
+            }
+        }
+
+    }
+    int NumberOfWall1 = 0 ;
+    char wall[NumberOfWall][2] ;
+    for (int i = 0; i < 11; i++)
+    {
+        for (int j = 0; j < 11; j++)
+        {
+            if (  mat[i][j] == 'w'){
+                wall[NumberOfWall1][0] = i ;
+                wall[NumberOfWall1][0] = j;
+
+                NumberOfWall1 ++ ;
+            }
+            if ( mat[i][j] = "1"){
+                datap[pl1] ={i,j} ;
+
+             }
+             if ( mat[i][j] = "2"){
+                   datap[pl2] ={i,j} ;
+
+               }
+             if ( mat[i][j] = "3"){
+                    datap[pl3] ={i,j}   ;
+
+               }
+              if ( mat[i][j] = "4"){
+                  datap[pl4] ={i,j} ;
+
+        }     }
+
+    }
+    dataw[Walls] = wall ;
+
+
 }
