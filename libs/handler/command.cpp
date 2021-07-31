@@ -66,7 +66,12 @@ bool Command::execute() {
         auto number = split(command.substr(5,endInd), ",");
         location.first = std::stoi(number[0]);
         location.second = std::stoi(number[1]);
-        // todo fill board.
+        if(is_up){
+            board.wall(board.mat,playerNumber,"up");
+        };
+        else {
+            board.wall(board.mat,playerNumber,"left") ;
+        }
 
 
     }
