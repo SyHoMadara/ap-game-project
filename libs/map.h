@@ -8,10 +8,10 @@ using namespace std;
 class Board {
 private:
     int num_of_players;
-    char **mat;
 
 public:
     static Board currentBoard;
+    char **mat;
 
     Board(int num_of_players);
 

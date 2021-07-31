@@ -12,14 +12,15 @@ private:
     string command;
     bool is_valid;
 public:
-
     static string commands[];
     static regex wallRegex;
+
+    char playerNumber;
 
     string getCommand();
     bool isValid();
 
-    explicit Command(string command);
+    explicit Command(string command, char playerNumber);
     void validate();
     bool execute();
 

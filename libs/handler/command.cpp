@@ -1,16 +1,16 @@
 #include "iostream"
 #include "command.h"
 #include "map.h"
-#include "tes"
 
 string Command::commands[] = {"up","down","right","left"};
 regex Command::wallRegex(R"(wall\((\d+),(\d+)\)((right)|(up)))");;
 
 vector<string> split(std::string string, std::string reg);
 
-Command::Command(string command) {
+Command::Command(string command, char playerNumber) {
     this->command = command;
     this->is_valid = false;
+    this->playerNumber = playerNumber;
 }
 
 void Command::validate() {
@@ -39,16 +39,16 @@ bool Command::execute() {
     // you can access to current board by Board::currentBoard
     Board board = (Board &&) Board::currentBoard;
     if (command == "up"){
-        board.move_up(char **mat, char player) ;
+        board.move_up(board.mat, playerNumber) ;
 
     } else if (command == "down") {
-        board.move_down(char **mat, char player ;
+        board.move_down(board.mat, playerNumber);
 
     } else if (command == "right") {
-        board.move_right(char **mat, char player) ;
+        board.move_right(board.mat, playerNumber) ;
 
     } else if (command == "left") {
-        board.move_left(char **mat, char player) ;
+        board.move_left(board.mat, playerNumber) ;
 
     } else {  // is set wall command : wall(5,10)up or wall(5,10)left
         pair<int, int> location;
