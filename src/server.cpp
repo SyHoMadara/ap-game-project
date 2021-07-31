@@ -2,6 +2,7 @@
 #include "../libs/httplib.h"
 #include "handler/FileReader.h"
 #include "../libs/map.h"
+#include "../libs/handler/command.h"
 
 using namespace std;
 
@@ -75,6 +76,7 @@ void startGame(bool isGameStart, int numberOfPlayers, string players[], httplib:
         cout << "Game is starting" << endl;
     }
     while (isGameStart) {
+        board = &Board::currentBoard;
         string player = players[turn % numberOfPlayers];
         string update = player + "_update";
         string play = player + "_play";
@@ -85,30 +87,26 @@ void startGame(bool isGameStart, int numberOfPlayers, string players[], httplib:
         });
         svr.Get(update, [&](const httplib::Request &req, httplib::Response &res) {
             // send current board.
-            /*
-             n\n
-             1 2\n
-             2 3\n
-
-
-             4
-
-
-             */
-            string response;
+            string response = board->convertBoardToString();
             res.body = response;
             res.status = HTTP_200_OK;
 
         });
         cout << "Player " << turn % numberOfPlayers + 1 << "is your turn." << endl;
         svr.Post(play, [&](const httplib::Request &req, httplib::Response &res) {
-            string command = req.body;
+            string inputCommand = req.body;
             //cout << players[turn % numberOfPlayers] << " command is: " << command << endl;
             //get command from client and use it to play
+            Command command(inputCommand,turn%numberOfPlayers);
+            if (command.execute()){
+                res.body = "true";
+            } else {
+                res.body = "false";
+            }
+            res.status = HTTP_200_OK;
             turn++;
-            res.set_content(R"({"request" = "successful"})", "text.plain");
+            turn = turn%numberOfPlayers;
         });
-        board = &Board::currentBoard;
         if ( '1' <= board->mat[5][5] && board->mat[5][5] <= '4') {
             cout << "Winner is: Player number " << board->mat[5][5] << endl;
             cout << "Game is end" << endl;

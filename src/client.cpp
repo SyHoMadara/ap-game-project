@@ -1,11 +1,14 @@
 #include <iostream>
 #include "../libs/httplib.h"
+#include "../libs/map.h"
 
 using namespace std;
 
 void startGame(string username, httplib::Client &cli);
 string play(httplib::Client &cli, string command);
-string update(httplib::Client &cli, string username);
+void update(httplib::Client &cli, string username);
+
+Board currentBoard(4);
 
 int main() {
     httplib::Client cli("127.0.0.1:8000");
@@ -43,7 +46,7 @@ void startGame(string username, httplib::Client &cli){
     string isMyTurn = username.append("_turn");
     while(true){
         //update board
-        string updatedBoard = update(cli, username);
+        update(cli, username);
         auto myTurn = cli.Get(isMyTurn.c_str());
         if(myTurn->body == isMyTurn){
             // play and get result
@@ -74,9 +77,14 @@ string play(httplib::Client &cli, string username){
     return resultOfPlay->body;
 }
 
-string update(httplib::Client &cli, string username){
+void update(httplib::Client &cli, string username){
     string update = username.append("_update");
-    auto updatedBoard = cli.Get(update.c_str());
-    return updatedBoard->body;
+    auto res = cli.Get(update.c_str());
+    do {
+        res = cli.Get(update.c_str());
+    } while (res->status != HTTP_200_OK);
+    currentBoard.convertStringToBoard(res->body);
+    system("clear");
+    currentBoard.print_board()
 }
 

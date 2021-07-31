@@ -35,20 +35,21 @@ bool Command::isValid() {
 }
 
 bool Command::execute() {
-    if (!is_valid) return false;
+    validate();
+    if (!is_valid) return is_valid;
     // you can access to current board by Board::currentBoard
     Board *board = &Board::currentBoard;
     if (command == "up"){
-        board->move_up(board->mat, playerNumber) ;
+        return board->move_up(board->mat, playerNumber) ;
 
     } else if (command == "down") {
-        board->move_down(board->mat, playerNumber);
+        return board->move_down(board->mat, playerNumber);
 
     } else if (command == "right") {
-        board->move_right(board->mat, playerNumber) ;
+        return board->move_right(board->mat, playerNumber) ;
 
     } else if (command == "left") {
-        board->move_left(board->mat, playerNumber) ;
+        return board->move_left(board->mat, playerNumber) ;
 
     } else {  // is set wall command : wall(5,10)up or wall(5,10)left
         pair<int, int> location;
@@ -67,9 +68,9 @@ bool Command::execute() {
         location.first = std::stoi(number[0]);
         location.second = std::stoi(number[1]);
         if(is_up){
-            board->wall(board->mat,playerNumber,"up");
+            return board->wall(board->mat,playerNumber,"up");
         } else {
-            board->wall(board->mat,playerNumber,"left") ;
+            return board->wall(board->mat,playerNumber,"left") ;
         }
 
 
