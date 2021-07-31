@@ -222,8 +222,8 @@ char **Board::wall(char **mat, char player, string move_like) {
 
 string Board::JsonConvertToBoard() {
 
-    map<string, char[][2]> dataw;
-    map<string, int[2]> datap;
+    map<string, char[][2]> wallsMap;
+    map<string, int[2]> playersMap;
     int NumberOfWall = 0;
     for (int i = 0; i < 11; i++) {
         for (int j = 0; j < 11; j++) {
@@ -243,10 +243,12 @@ string Board::JsonConvertToBoard() {
 
                 NumberOfWall1++;
             }
-            string player = "pl";
-            player += to_string(mat[i][j]);
-            datap[player][0] = i;
-            datap[player][1] = j;
+            if (mat[i][j] <= '4' && mat[i][j] >= '1'){
+                string player = "pl";
+                player += to_string(mat[i][j]);
+                playersMap[player][0] = i;
+                playersMap[player][1] = j;
+            }
 
         }
 

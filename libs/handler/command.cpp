@@ -1,6 +1,7 @@
 #include "iostream"
 #include "command.h"
 #include "map.h"
+#include "tes"
 
 string Command::commands[] = {"up","down","right","left"};
 regex Command::wallRegex(R"(wall\((\d+),(\d+)\)((right)|(up)))");;
@@ -66,6 +67,7 @@ bool Command::execute() {
         location.first = std::stoi(number[0]);
         location.second = std::stoi(number[1]);
         // todo fill board.
+
 
     }
     return true;
