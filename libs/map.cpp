@@ -268,6 +268,7 @@ void Board::convertStringToBoard(const string& board) {
     stringstream cin(board);
     int wallNumber;
     int x,y;
+    string clientNumber;
     cin >> wallNumber;
     for (int i = 0; i < wallNumber; ++i) {
         cin >> x >> y;

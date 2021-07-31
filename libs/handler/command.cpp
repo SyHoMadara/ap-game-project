@@ -14,6 +14,8 @@ Command::Command(string command, char playerNumber) {
 }
 
 void Command::validate() {
+    stringstream ss(command);
+    ss >> playerNumber;
     for (string s : commands){
         if (s == command){
             is_valid = true;

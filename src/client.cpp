@@ -5,26 +5,29 @@
 using namespace std;
 
 void startGame(string username, httplib::Client &cli);
+
 string play(httplib::Client &cli, string command);
+
 void update(httplib::Client &cli, string username);
 
 Board currentBoard(4);
+string playerNumber;
 
 int main() {
     httplib::Client cli("127.0.0.1:8000");
     //first time request for getting username and join the game.
     auto requestToPlay = cli.Get("/new_game");
     string username;
-    if(requestToPlay){
+    if (requestToPlay) {
         username = requestToPlay->body;
         cout << "your id: " << username << endl;
-        if(username.at(0) == '/'){ // username[0]
+        if (username.at(0) == '/') { // username[0]
             cout << "true" << endl;
             cout << "waiting to start game" << endl;
+            playerNumber += username[3];
             startGame(username, cli);
         }
-    }
-    else{
+    } else {
         cout << "Server not response! the game is full." << endl;
         cout << requestToPlay->status;
         return 0;
@@ -42,42 +45,44 @@ int main() {
 
 }
 
-void startGame(string username, httplib::Client &cli){
-    string isMyTurn = username.append("_turn");
-    while(true){
+void startGame(string username, httplib::Client &cli) {
+    while (true) {
         //update board
         update(cli, username);
-        auto myTurn = cli.Get(isMyTurn.c_str());
-        if(myTurn->body == isMyTurn){
+        if (cli.Post("/my_turn", playerNumber, "text/plain")->body == "true"){
             // play and get result
             string resultOfPlay;
-            do{
+            do {
                 resultOfPlay = play(cli, username);
-                if (resultOfPlay == "true"){
+                if (resultOfPlay == "true") {
                     cout << "your move done!" << endl;
-                }
-                else if(resultOfPlay == "false"){
+                } else if (resultOfPlay == "false") {
                     cout << "foul move" << endl;
                 }
             } while (resultOfPlay != "true");
         }
-        if(myTurn->body == "end"){
-            cout << "Game is end" << endl;
+        if (currentBoard.mat[5][5] <= '4' && currentBoard.mat[5][5]>='1'){
+            cout << "game hase been ended" << endl;
             break;
         }
     }
+    if (currentBoard.mat[5][5] == playerNumber[0]){
+        cout << "you are winner" << endl;
+    } else {
+        cout << "you loosing game" << endl;
+    }
 }
 
-string play(httplib::Client &cli, string username){
+string play(httplib::Client &cli, string username) {
     string play = username.append("_play");
     cout << "Enter your move: ";
-    string command;
+    string command =;
     cin >> command;
     auto resultOfPlay = cli.Post(play.c_str(), command, "text/plain");
     return resultOfPlay->body;
 }
 
-void update(httplib::Client &cli, string username){
+void update(httplib::Client &cli, string username) {
     string update = username.append("_update");
     auto res = cli.Get(update.c_str());
     do {
@@ -85,6 +90,6 @@ void update(httplib::Client &cli, string username){
     } while (res->status != HTTP_200_OK);
     currentBoard.convertStringToBoard(res->body);
     system("clear");
-    currentBoard.print_board()
+    currentBoard.print_board();
 }
 
