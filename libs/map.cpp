@@ -1,7 +1,12 @@
 #include "iostream"
 #include "map.h"
+#include <unordered_map>
 
 Board Board::currentBoard(4);
+
+Board::Board() {
+
+}
 
 Board::Board(int num_of_players) {
     this->num_of_players = num_of_players;
@@ -222,8 +227,6 @@ char **Board::wall(char **mat, char player, string move_like) {
 
 string Board::JsonConvertToBoard() {
 
-    map<string, char[][2]> wallsMap;
-    map<string, int[2]> playersMap;
     int NumberOfWall = 0;
     for (int i = 0; i < 11; i++) {
         for (int j = 0; j < 11; j++) {
@@ -234,25 +237,31 @@ string Board::JsonConvertToBoard() {
 
     }
     int NumberOfWall1 = 0;
-    char wall[NumberOfWall][2];
+    char walls[NumberOfWall][2];
+    char players[4][2];
     for (int i = 0; i < 11; i++) {
         for (int j = 0; j < 11; j++) {
             if (mat[i][j] == 'w') {
-                wall[NumberOfWall1][0] = i;
-                wall[NumberOfWall1][1] = j;
+                walls[NumberOfWall1][0] = i;
+                walls[NumberOfWall1][1] = j;
 
                 NumberOfWall1++;
             }
             if (mat[i][j] <= '4' && mat[i][j] >= '1'){
                 string player = "pl";
+                int playerNumber = (int)('4'-mat[i][j]);
                 player += to_string(mat[i][j]);
-                playersMap[player][0] = i;
-                playersMap[player][1] = j;
+                players[playerNumber][0] = i;
+                players[playerNumber][1] = j;
             }
 
         }
 
     }
+
+    unordered_map<string, char**> data;
+    data["walls"] = reinterpret_cast<char **>(&walls);
+    data["players"] = reinterpret_cast<char **>(&players);
 
 
 }

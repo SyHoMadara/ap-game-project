@@ -1,6 +1,7 @@
 #include <iostream>
 #include "../libs/httplib.h"
 #include "handler/FileReader.h"
+#include "../libs/map.h"
 
 using namespace std;
 
@@ -19,7 +20,7 @@ const long long port = 8000;
 
 string playerIdGenerator(int numberOfConnected);
 
-void startGame(bool isGameStart, int numberOfPlayers, string players[numberOfPlayers], httplib::Server &svr);
+void startGame(bool isGameStart, int numberOfPlayers, string players[], httplib::Server &svr);
 
 int main() {
     httplib::Server server;
@@ -27,6 +28,7 @@ int main() {
     int numberOfConnected = 0;
     bool isGameStart = false;
     string players[numberOfPlayers];
+//    new(&Board::currentBoard) Board(4);
 
     server.Post("/pl", [&](const httplib::Request &req, httplib::Response &res) {
         cout << req.body << endl;
@@ -44,11 +46,13 @@ int main() {
             return;
         }
         string id = playerIdGenerator(numberOfConnected);
-        res.set_content(id, "text/plain");
+        res.set_content(id + " waiting to start game ...", "text/plain");
         players[numberOfConnected] = id;
         numberOfConnected++;
+        cout << id << " join to game" << endl;
         if (numberOfConnected == numberOfPlayers) {
             startGame(true, numberOfPlayers, players, server);
+            res.set_content(id + "game started", "text/plain");
         }
     });
 
@@ -64,7 +68,8 @@ string playerIdGenerator(int numberOfConnected) {
     return pl.append(id);
 }
 
-void startGame(bool isGameStart, int numberOfPlayers, string players[numberOfPlayers], httplib::Server &svr) {
+void startGame(bool isGameStart, int numberOfPlayers, string players[], httplib::Server &svr) {
+    Board *board;
     int turn = 0;
     if (isGameStart) {
         cout << "Game is starting" << endl;
@@ -80,6 +85,17 @@ void startGame(bool isGameStart, int numberOfPlayers, string players[numberOfPla
         });
         svr.Get(update, [&](const httplib::Request &req, httplib::Response &res) {
             // send current board.
+            /*
+             n
+             1 2
+             2 3
+
+
+             4
+
+
+             */
+
         });
         cout << "Player " << turn % numberOfPlayers + 1 << "is your turn." << endl;
         svr.Post(play, [&](const httplib::Request &req, httplib::Response &res) {
@@ -89,9 +105,9 @@ void startGame(bool isGameStart, int numberOfPlayers, string players[numberOfPla
             turn++;
             res.set_content(R"({"request" = "successful"})", "text.plain");
         });
-
-        if (/*game end condition*/ false) {
-            cout << "Winner is: ";
+        board = &Board::currentBoard;
+        if ( '1' <= board->mat[5][5] && board->mat[5][5] <= '4') {
+            cout << "Winner is: Player number " << board->mat[5][5] << endl;
             cout << "Game is end" << endl;
             svr.stop();
             break;

@@ -17,6 +17,7 @@ int main() {
         cout << "your id: " << username << endl;
         if(username.at(0) == '/'){ // username[0]
             cout << "true" << endl;
+            cout << "waiting to start game" << endl;
             startGame(username, cli);
         }
     }

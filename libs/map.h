@@ -38,4 +38,6 @@ public:
     char **wall(char **mat, char player, string move_like);
 
     string JsonConvertToBoard();
+
+    Board();
 };
