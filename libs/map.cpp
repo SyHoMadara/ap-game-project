@@ -1,8 +1,6 @@
 #include "iostream"
 #include "map.h"
 #include <unordered_map>
-#include <sstream>
-#include "vector"
 
 Board Board::currentBoard(4);
 
@@ -120,62 +118,62 @@ bool Board::valid_move(char **mat, char player, string move) {
 }
 
 //up
-char **Board::move_up(char **mat, char player) {
+bool Board::moveUp(char **mat, char player) {
     if (valid_move(mat, player, "up")) {
         int *arr = new int[2];
         arr = find_player(player, mat);
         mat[arr[0]][arr[1]] = '-';
         mat[arr[0] + 1][arr[1]] = player;
-        return mat;
+        return true;
     } else {
         cerr << "you cant do this.";
-        exit(1);
+        return false ;
     }
 }
 
 //down
-char **Board::move_down(char **mat, char player) {
+bool Board::moveDown(char **mat, char player) {
     if (valid_move(mat, player, "down")) {
         int *arr = new int[2];
         arr = find_player(player, mat);
         mat[arr[0]][arr[1]] = '-';
         mat[arr[0] - 1][arr[1]] = player;
-        return mat;
+        return true;
     } else {
         cerr << "you cant do this.";
-        exit(1);
+        return false ;
     }
 }
 
 //left
-char **Board::move_left(char **mat, char player) {
+bool Board::moveLeft(char **mat, char player) {
     if (valid_move(mat, player, "left")) {
         int *arr = new int[2];
         arr = find_player(player, mat);
         mat[arr[0]][arr[1]] = '-';
         mat[arr[0]][arr[1] - 1] = player;
-        return mat;
+        return true;
     } else {
         cerr << "you cant do this.";
-        exit(1);
+        return false ;
     }
 }
 
 //right
-char **Board::move_right(char **mat, char player) {
+bool Board::moveRight(char **mat, char player) {
     if (valid_move(mat, player, "right")) {
         int *arr = new int[2];
         arr = find_player(player, mat);
         mat[arr[0]][arr[1]] = '-';
         mat[arr[0]][arr[1] + 1] = player;
-        return mat;
+        return true;
     } else {
         cerr << "you cant do this.";
-        exit(1);
+        return false ;
     }
 }
 
-bool Board::valid_wall(char **mat, char player, string move_like) {
+bool Board::validWall(char **mat, char player, string move_like) {
     if (move_like == "up" || move_like == "down") {
         int *arr = new int[2];
         arr = find_player(player, mat);
@@ -200,7 +198,7 @@ bool Board::valid_wall(char **mat, char player, string move_like) {
 }
 
 //wall
-char **Board::wall(char **mat, char player, string move_like) {
+bool Board::Wall(char **mat, char player, string move_like) {
     int *arr = new int[2];
     arr = find_player(player, mat);
     if (move_like == "up" || move_like == "down") {
@@ -208,26 +206,26 @@ char **Board::wall(char **mat, char player, string move_like) {
             mat[arr[0]][arr[1]] = 'w';
             mat[arr[0] + 1][arr[1]] = 'w';
             mat[arr[0] - 1][arr[1]] = 'w';
-            return mat;
+            return true;
         } else {
             cerr << "you cant put a wall in this section";
-            exit(1);
+            return false ;
         }
     } else {
         if (valid_wall(mat, player, move_like)) {
             mat[arr[0]][arr[1] + 1] = 'w';
             mat[arr[0]][arr[1] + 1] = 'w';
             mat[arr[0]][arr[1] - 1] = 'w';
-            return mat;
+            return true;
         } else {
             cerr << "you cant put a wall in this section";
-            exit(1);
+            return false;
         }
     }
-    return mat;
+    return true;
 }
 
-string Board::convertBoardToString() {
+string Board::JsonConvertToBoard() {
 
     int NumberOfWall = 0;
     for (int i = 0; i < 11; i++) {
@@ -238,48 +236,39 @@ string Board::convertBoardToString() {
         }
 
     }
-    string responseWalls;
-    string responsePlayer;
-    responseWalls += to_string(NumberOfWall) + "\n";
-    responsePlayer += to_string(num_of_players) + "\n";
+    string response("");
+    string response1("");
+    response += to_string( NumberOfWall) +"\n";
+    response1 += to_string( num_of_players) +"\n";
 
-    int wallCounter = 0;
+    int NumberOfWall1 = 0;
     char walls[NumberOfWall][2];
     char players[4][2];
     for (int i = 0; i < 11; i++) {
         for (int j = 0; j < 11; j++) {
             if (mat[i][j] == 'w') {
-                responseWalls += to_string(i) + " " + to_string(j) + "\n";
-                wallCounter++;
+                response += to_string(i) +" " + to_string(j) +"\n";
+
+
+                NumberOfWall1++;
             }
             if (mat[i][j] <= '4' && mat[i][j] >= '1'){
-                string player;
+                string player = "pl";
+                int playerNumber = (int)('4'-mat[i][j]);
                 player += to_string(mat[i][j]);
-                responsePlayer += player + " " + to_string(i) + " " + to_string(j) + "\n";
+                players[playerNumber][0] = i;
+                players[playerNumber][1] = j;
+                response1=player+"\n";
+                response1=to_string(i) +" " + to_string(j) +"\n";
             }
 
         }
 
     }
 
+    unordered_map<string, char**> data;
+    data["walls"] = reinterpret_cast<char **>(&walls);
+    data["players"] = reinterpret_cast<char **>(&players);
 
-}
-
-void Board::convertStringToBoard(const string& board) {
-    stringstream cin(board);
-    int wallNumber;
-    int x,y;
-    cin >> wallNumber;
-    for (int i = 0; i < wallNumber; ++i) {
-        cin >> x >> y;
-        mat[x][y] = 'w';
-    }
-    int m;
-    string player;
-    cin >> m;
-    for (int i = 0; i < m; ++i) {
-        cin >> player >> x >> y;
-        mat[x][y] = player[0];
-    }
 
 }

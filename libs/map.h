@@ -25,15 +25,15 @@ public:
 
     bool valid_move(char **mat, char player, string move);
 
-    bool move_up(char **mat, char player);
+    bool moveUp(char **mat, char player);
 
-    bool move_down(char **mat, char player);
+    bool moveDown(char **mat, char player);
 
-    bool move_left(char **mat, char player);
+    bool moveLeft(char **mat, char player);
 
-    bool move_right(char **mat, char player);
+    bool moveRight(char **mat, char player);
 
-    bool valid_wall(char **mat, char player, string move_like);
+    bool validWall(char **mat, char player, string move_like);
 
     bool wall(char **mat, char player, string move_like);
 
