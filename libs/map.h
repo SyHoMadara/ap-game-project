@@ -8,6 +8,7 @@ class Board
 {
 private:
     int num_of_players;
+    char **mat;
 
 public:
     Board(int num_of_players);
@@ -320,7 +321,7 @@ string Board::JsonConvertToBoard()
         {
             if (  mat[i][j] == 'w'){
                 wall[NumberOfWall1][0] = i ;
-                wall[NumberOfWall1][0] = j;
+                wall[NumberOfWall1][1] = j;
 
                 NumberOfWall1 ++ ;
             }
