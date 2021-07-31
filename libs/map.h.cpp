@@ -1,29 +1,5 @@
-#include <iostream>
-#include <string>
-#include <map>
-#include <pair>
-using namespace std;
-
-class Board
-{
-private:
-    int num_of_players;
-
-public:
-    Board(int num_of_players);
-    char **create_board(int num_of_players);
-    char **set_empty(char **mat);
-    void print_board(char **mat);
-    int *find_player(char player, char **mat);
-    bool valid_move(char **mat, char player, string move);
-    char **move_up(char **mat, char player);
-    char **move_down(char **mat, char player);
-    char **move_left(char **mat, char player);
-    char **move_right(char **mat, char player);
-    bool valid_wall(char **mat, char player, string move_like);
-    char **wall(char **mat, char player, string move_like);
-    string JsonConvertToBoard();
-};
+#include "iostream"
+#include "map.h"
 
 Board::Board(int num_of_players)
 {
@@ -298,8 +274,6 @@ char **Board::wall(char **mat, char player, string move_like)
 }
 string Board::JsonConvertToBoard()
 {
-
-    map<string  , char[][] > dataw;
     map<string  , char[2] > datap ;
     int NumberOfWall = 0 ;
     for (int i = 0; i < 11; i++)
@@ -327,22 +301,22 @@ string Board::JsonConvertToBoard()
             if ( mat[i][j] = "1"){
                 datap[pl1] ={i,j} ;
 
-             }
-             if ( mat[i][j] = "2"){
-                   datap[pl2] ={i,j} ;
+            }
+            if ( mat[i][j] = "2"){
+                datap[pl2] ={i,j} ;
 
-               }
-             if ( mat[i][j] = "3"){
-                    datap[pl3] ={i,j}   ;
+            }
+            if ( mat[i][j] = "3"){
+                datap[pl3] ={i,j}   ;
 
-               }
-              if ( mat[i][j] = "4"){
-                  datap[pl4] ={i,j} ;
+            }
+            if ( mat[i][j] = "4"){
+                datap[pl4] ={i,j} ;
 
-        }     }
+            }     }
 
     }
-    dataw[Walls] = wall ;
-
+    map<string, map<string, char[][]>> data;
+    data['walls'] =
 
 }

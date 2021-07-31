@@ -9,7 +9,8 @@ add_executable(
         Server
         src/server.cpp
         libs/httplib.h
-        src/handler/FileReader.h src/handler/FileReader.cpp)
+        libs/map.h
+        libs/handler/FileReader.h libs/handler/command.h)
 target_link_libraries(
         Server
         pthread
@@ -18,5 +19,6 @@ target_link_libraries(
 add_executable(
         Client
         src/client.cpp
+        libs/map.h
         libs/httplib.h
-)
+        libs/map.h.cpp)
