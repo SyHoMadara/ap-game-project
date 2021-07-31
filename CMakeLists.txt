@@ -21,4 +21,4 @@ add_executable(
         src/client.cpp
         libs/map.h
         libs/httplib.h
-)
+        libs/map.h.cpp)
