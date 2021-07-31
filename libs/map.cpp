@@ -236,14 +236,19 @@ string Board::JsonConvertToBoard() {
         }
 
     }
+    string response("");
+    string response1("");
+    response += to_string( NumberOfWall) +"\n";
+    response1 += to_string( num_of_players) +"\n";
+
     int NumberOfWall1 = 0;
     char walls[NumberOfWall][2];
     char players[4][2];
     for (int i = 0; i < 11; i++) {
         for (int j = 0; j < 11; j++) {
             if (mat[i][j] == 'w') {
-                walls[NumberOfWall1][0] = i;
-                walls[NumberOfWall1][1] = j;
+                response += to_string(i) +" " + to_string(j) +"\n";
+
 
                 NumberOfWall1++;
             }
@@ -253,6 +258,8 @@ string Board::JsonConvertToBoard() {
                 player += to_string(mat[i][j]);
                 players[playerNumber][0] = i;
                 players[playerNumber][1] = j;
+                response1=player+"\n";
+                response1=to_string(i) +" " + to_string(j) +"\n";
             }
 
         }
