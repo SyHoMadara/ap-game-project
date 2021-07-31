@@ -325,24 +325,24 @@ string Board::JsonConvertToBoard()
                 NumberOfWall1 ++ ;
             }
             if ( mat[i][j] = "1"){
-                datap[pl1] ={i,j} ;
+                datap["pl1"] ={i,j} ;
 
              }
              if ( mat[i][j] = "2"){
-                   datap[pl2] ={i,j} ;
+                   datap["pl2"] ={i,j} ;
 
                }
              if ( mat[i][j] = "3"){
-                    datap[pl3] ={i,j}   ;
+                    datap["pl3"] ={i,j}   ;
 
                }
               if ( mat[i][j] = "4"){
-                  datap[pl4] ={i,j} ;
+                  datap["pl4"] ={i,j} ;
 
         }     }
 
     }
-    dataw[Walls] = wall ;
+    dataw["Walls"] = wall ;
 
 
 }
