@@ -21,6 +21,7 @@ public:
     char **move_right(char **mat, char player);
     bool valid_wall(char **mat, char player, string move_like);
     char **wall(char **mat, char player, string move_like);
+
 };
 
 Board::Board(int num_of_players)
