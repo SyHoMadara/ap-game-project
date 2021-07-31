@@ -1,6 +1,7 @@
 #include "iostream"
 #include "map.h"
 #include <unordered_map>
+#include <sstream>
 
 Board Board::currentBoard(4);
 
@@ -198,11 +199,11 @@ bool Board::validWall(char **mat, char player, string move_like) {
 }
 
 //wall
-bool Board::Wall(char **mat, char player, string move_like) {
+bool Board::wall(char **mat, char player, string move_like) {
     int *arr = new int[2];
     arr = find_player(player, mat);
     if (move_like == "up" || move_like == "down") {
-        if (valid_wall(mat, player, move_like)) {
+        if (validWall(mat, player, move_like)) {
             mat[arr[0]][arr[1]] = 'w';
             mat[arr[0] + 1][arr[1]] = 'w';
             mat[arr[0] - 1][arr[1]] = 'w';
@@ -212,7 +213,7 @@ bool Board::Wall(char **mat, char player, string move_like) {
             return false ;
         }
     } else {
-        if (valid_wall(mat, player, move_like)) {
+        if (validWall(mat, player, move_like)) {
             mat[arr[0]][arr[1] + 1] = 'w';
             mat[arr[0]][arr[1] + 1] = 'w';
             mat[arr[0]][arr[1] - 1] = 'w';
@@ -225,7 +226,7 @@ bool Board::Wall(char **mat, char player, string move_like) {
     return true;
 }
 
-string Board::JsonConvertToBoard() {
+string Board::convertBoardToString() {
 
     int NumberOfWall = 0;
     for (int i = 0; i < 11; i++) {
@@ -236,39 +237,48 @@ string Board::JsonConvertToBoard() {
         }
 
     }
-    string response("");
-    string response1("");
-    response += to_string( NumberOfWall) +"\n";
-    response1 += to_string( num_of_players) +"\n";
+    string responseWalls;
+    string responsePlayer;
+    responseWalls += to_string(NumberOfWall) + "\n";
+    responsePlayer += to_string(num_of_players) + "\n";
 
-    int NumberOfWall1 = 0;
+    int wallCounter = 0;
     char walls[NumberOfWall][2];
     char players[4][2];
     for (int i = 0; i < 11; i++) {
         for (int j = 0; j < 11; j++) {
             if (mat[i][j] == 'w') {
-                response += to_string(i) +" " + to_string(j) +"\n";
-
-
-                NumberOfWall1++;
+                responseWalls += to_string(i) + " " + to_string(j) + "\n";
+                wallCounter++;
             }
             if (mat[i][j] <= '4' && mat[i][j] >= '1'){
-                string player = "pl";
-                int playerNumber = (int)('4'-mat[i][j]);
+                string player;
                 player += to_string(mat[i][j]);
-                players[playerNumber][0] = i;
-                players[playerNumber][1] = j;
-                response1=player+"\n";
-                response1=to_string(i) +" " + to_string(j) +"\n";
+                responsePlayer += player + " " + to_string(i) + " " + to_string(j) + "\n";
             }
 
         }
 
     }
 
-    unordered_map<string, char**> data;
-    data["walls"] = reinterpret_cast<char **>(&walls);
-    data["players"] = reinterpret_cast<char **>(&players);
 
+}
+
+void Board::convertStringToBoard(const string& board) {
+    stringstream cin(board);
+    int wallNumber;
+    int x,y;
+    cin >> wallNumber;
+    for (int i = 0; i < wallNumber; ++i) {
+        cin >> x >> y;
+        mat[x][y] = 'w';
+    }
+    int m;
+    string player;
+    cin >> m;
+    for (int i = 0; i < m; ++i) {
+        cin >> player >> x >> y;
+        mat[x][y] = player[0];
+    }
 
 }
