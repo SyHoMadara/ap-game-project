@@ -6,11 +6,12 @@
 Board Board::currentBoard(4);
 
 Board::Board() {
-
+    createBoard(4);
 }
 
 Board::Board(int numberOfPlayers) {
     this->numberOfPlayers = numberOfPlayers;
+    createBoard(numberOfPlayers);
 }
 
 void Board::setEmptyMap() {
@@ -22,6 +23,7 @@ void Board::setEmptyMap() {
                 mat[i][j] = '-';
         }
     }
+
 }
 
 void Board::printMap() {
@@ -38,28 +40,26 @@ void Board::printMap() {
 void Board::createBoard(int numberOfPlayers) {
     if (numberOfPlayers == 2) {
         int n = 11;
-        char **mat = new char *[n];
+        mat = new char *[n];
         for (int i = 0; i < n; i++)
             mat[i] = new char[n];
         setEmptyMap();
         mat[0][0] = '1';
         mat[10][10] = '2';
-        printMap();
 
     } else if (numberOfPlayers == 3) {
         int n = 11;
-        char **mat = new char *[n];
+        mat = new char *[n];
         for (int i = 0; i < n; i++)
             mat[i] = new char[n];
         setEmptyMap();
         mat[0][0] = '1';
         mat[0][10] = '2';
         mat[10][0] = '3';
-        printMap();
 
     } else if (numberOfPlayers == 4) {
         int n = 11;
-        char **mat = new char *[n];
+        mat = new char *[n];
         for (int i = 0; i < n; i++)
             mat[i] = new char[n];
         setEmptyMap();
@@ -67,7 +67,6 @@ void Board::createBoard(int numberOfPlayers) {
         mat[10][10] = '4';
         mat[0][10] = '2';
         mat[10][0] = '3';
-        printMap();
 
     } else {
 
@@ -90,28 +89,27 @@ int *Board::findPlayer(char player) {
 }
 
 bool Board::validMove(char player, string move) {
-    int *arr = new int[2];
+    int *arr = NULL;
     arr = findPlayer(player);
     if (move == "up") {
         if (arr[0] == 0)
             return false;
-        else if (mat[arr[0] + 1][arr[1]] != '-')
+        else if (mat[arr[0] - 1][arr[1]] != '-' && mat[arr[0] - 1][arr[1]] != 'O')
             return false;
     } else if (move == "down") {
         if (arr[0] == 10)
             return false;
-        else if (mat[arr[0] - 1][arr[1]] != '-')
+        else if (mat[arr[0] + 1][arr[1]] != '-' && mat[arr[0] + 1][arr[1]] != 'O')
             return false;
     } else if (move == "left") {
         if (arr[1] == 0)
             return false;
-        else if (mat[arr[0]][arr[1] - 1] != '-')
+        else if (mat[arr[0]][arr[1] - 1] != '-' && mat[arr[0]][arr[1] - 1] != 'O')
             return false;
-    } else //right
-    {
+    } else { // right
         if (arr[1] == 10)
             return false;
-        else if (mat[arr[0]][arr[1] + 1] != '-')
+        else if (mat[arr[0]][arr[1] + 1] != '-' && mat[arr[0]][arr[1] + 1] != '-')
             return false;
     }
     return true;
@@ -123,7 +121,7 @@ bool Board::moveUp( char player) {
         int *arr = new int[2];
         arr = findPlayer(player);
         mat[arr[0]][arr[1]] = '-';
-        mat[arr[0] + 1][arr[1]] = player;
+        mat[arr[0] - 1][arr[1]] = player;
         return true;
     } else {
         cerr << "you cant do this.";
@@ -135,9 +133,9 @@ bool Board::moveUp( char player) {
 bool Board::moveDown( char player) {
     if (validMove( player, "down")) {
         int *arr = new int[2];
-        arr = findPlayer(player, mat);
+        arr = findPlayer(player);
         mat[arr[0]][arr[1]] = '-';
-        mat[arr[0] - 1][arr[1]] = player;
+        mat[arr[0] + 1][arr[1]] = player;
         return true;
     } else {
         cerr << "you cant do this.";
@@ -252,13 +250,14 @@ string Board::convertBoardToString() {
             }
             if (mat[i][j] <= '4' && mat[i][j] >= '1'){
                 string player;
-                player += to_string(mat[i][j]);
+                player += mat[i][j];
                 responsePlayer += player + " " + to_string(i) + " " + to_string(j) + "\n";
             }
 
         }
 
     }
+    return responseWalls + responsePlayer;
 
 
 }

@@ -23,19 +23,19 @@ int turn = 0;
 
 string playerIdGenerator(int numberOfConnected);
 
-void startGame(bool isGameStart, int numberOfPlayers, string players[], httplib::Server &svr);
+void startGame();
 
 int main() {
     httplib::Server svr;
     int numberOfPlayers = 4;
     int numberOfConnected = 0;
-    bool isGameStart = false;
+    bool  isGameStart = false;
     string players[numberOfPlayers];
+    board = &Board::currentBoard;
 
     svr.Get("/new_game", [&](const httplib::Request &req, httplib::Response &res) {
         if (numberOfPlayers == numberOfConnected) {
             res.set_content("you can't join the game", "text/plain");
-            res.status = HTTP_403_FORBIDDEN;
             return;
         }
         string id = playerIdGenerator(numberOfConnected);
@@ -44,7 +44,7 @@ int main() {
         numberOfConnected++;
         cout << id << " join to game" << endl;
         if (numberOfConnected == numberOfPlayers) {
-            startGame(true, numberOfPlayers, players, svr);
+            startGame();
             res.set_content(id + "game started", "text/plain");
         }
     });
@@ -54,25 +54,27 @@ int main() {
         if ('1' <= board->mat[5][5] && board->mat[5][5] <= '4') {
             cout << "Winner is: Player number " << board->mat[5][5] << endl;
             cout << "Game is end" << endl;
+            numberOfConnected = 0;
             isGameStart = false;
         }
+        board = &Board::currentBoard;
         string response = board->convertBoardToString();
         res.body = response;
         res.status = HTTP_200_OK;
 
     });
-    cout << "Player " << turn % numberOfPlayers + 1 << "is your turn." << endl;
     svr.Post("/play", [&](const httplib::Request &req, httplib::Response &res) {
         string inputCommand = req.body;
-        if (inputCommand[0] != (char)(turn%numberOfPlayers + '0')){
+        if (inputCommand[0] != (char)(turn%numberOfPlayers + '1')){
             res.body = "not_your_turn";
             return;
         }
-        Command command(inputCommand, turn % numberOfPlayers);
+        Command command(inputCommand);
         if (command.execute()) {
             res.body = "true";
         } else {
             res.body = "false";
+            return;
         }
         res.status = HTTP_200_OK;
         turn++;
@@ -80,7 +82,7 @@ int main() {
     });
 
     svr.Post("/my_turn", [&](const httplib::Request &req, httplib::Response &res) {
-        if (req.body[0] == turn){
+        if (req.body[0] == to_string(turn+1)[0]){
             res.body = "true";
         } else {
             res.body = "false";
@@ -99,10 +101,9 @@ string playerIdGenerator(int numberOfConnected) {
     return pl.append(id);
 }
 
-void startGame(httplib::Server &svr) {
+void startGame() {
     turn = 0;
     cout << "Game is starting" << endl;
     board = &Board::currentBoard;
     board->setEmptyMap();
-
 }

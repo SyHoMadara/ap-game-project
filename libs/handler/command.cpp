@@ -7,15 +7,17 @@ regex Command::wallRegex(R"(wall\((\d+),(\d+)\)((right)|(up)))");;
 
 vector<string> split(std::string string, std::string reg);
 
-Command::Command(string command, char playerNumber) {
+Command::Command(string command) {
     this->command = command;
     this->is_valid = false;
-    this->playerNumber = playerNumber;
 }
 
 void Command::validate() {
     stringstream ss(command);
     ss >> playerNumber;
+    string s;
+    ss >> s;
+    command = s;
     for (string s : commands){
         if (s == command){
             is_valid = true;
@@ -37,20 +39,21 @@ bool Command::isValid() {
 }
 
 bool Command::execute() {
+    validate();
     if (!is_valid) return false;
     // you can access to current board by Board::currentBoard
     Board *board = &Board::currentBoard;
     if (command == "up"){
-       return board->moveUp(board->mat, playerNumber) ;
+       return board->moveUp(playerNumber) ;
 
     } else if (command == "down") {
-       return board->moveDown(board->mat, playerNumber);
+       return board->moveDown(playerNumber);
 
     } else if (command == "right") {
-       return board->moveRight(board->mat, playerNumber) ;
+       return board->moveRight(playerNumber) ;
 
     } else if (command == "left") {
-       return board->moveLeft(board->mat, playerNumber) ;
+       return board->moveLeft(playerNumber) ;
 
     } else {  // is set wall command : wall(5,10)up or wall(5,10)left
         pair<int, int> location;
@@ -69,9 +72,9 @@ bool Command::execute() {
         location.first = std::stoi(number[0]);
         location.second = std::stoi(number[1]);
         if(is_up){
-            return board->wall(board->playerNumber,"up");
+            return board->wall(playerNumber,"up");
         } else {
-            return board->wall(board->playerNumber,"left") ;
+            return board->wall(playerNumber,"left") ;
         }
 
 

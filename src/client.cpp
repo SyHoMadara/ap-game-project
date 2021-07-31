@@ -73,23 +73,45 @@ void startGame(string username, httplib::Client &cli) {
     }
 }
 
+string chooseCommand(){
+    cout << "1.move up" << endl;
+    cout << "2.move down" << endl;
+    cout << "3.move right" << endl;
+    cout << "4.move left" << endl;
+    cout << "5.put wall" << endl;
+    int chosenNumb;
+    cout << "your command : ";
+    cin >> chosenNumb;
+    switch (chosenNumb) {
+        case 1:
+            return "up";
+        case 2:
+            return "down";
+        case 3:
+            return "right";
+        case 4:
+            return "left";
+        case 5:
+            cout << "enter location as format (8,10)"
+    }
+
+}
+
 string play(httplib::Client &cli, string username) {
-    string play = username.append("_play");
-    cout << "Enter your move: ";
-    string command =;
-    cin >> command;
-    auto resultOfPlay = cli.Post(play.c_str(), command, "text/plain");
+    string command = playerNumber + '\n';
+    command += chooseCommand();
+    auto resultOfPlay = cli.Post("/play", command, "text/plain");
     return resultOfPlay->body;
 }
 
 void update(httplib::Client &cli, string username) {
     string update = username.append("_update");
-    auto res = cli.Get(update.c_str());
+    auto res = cli.Get("/update");
     do {
-        res = cli.Get(update.c_str());
+        res = cli.Get("/update");
     } while (res->status != HTTP_200_OK);
     currentBoard.convertStringToBoard(res->body);
     system("clear");
-    currentBoard.print_board();
+    currentBoard.printMap();
 }
 

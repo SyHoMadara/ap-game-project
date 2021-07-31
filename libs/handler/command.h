@@ -20,7 +20,7 @@ public:
     string getCommand();
     bool isValid();
 
-    Command(string command, char playerNumber);
+    Command(string command);
     void validate();
     bool execute();
 

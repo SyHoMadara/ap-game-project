@@ -11,7 +11,7 @@ add_executable(
         libs/httplib.h
         libs/map.h
         libs/map.cpp
-        libs/handler/FileReader.h libs/handler/command.h)
+        libs/handler/FileReader.h libs/handler/command.h libs/handler/command.cpp)
 target_link_libraries(
         Server
         pthread
@@ -20,28 +20,32 @@ target_link_libraries(
 add_executable(
         Client1
         src/client.cpp
-        libs/map.h
         libs/httplib.h
-        libs/map.cpp libs/handler/command.cpp libs/handler/FileReader.cpp
+        libs/map.h
+        libs/map.cpp
+        libs/handler/FileReader.h libs/handler/command.h libs/handler/command.cpp
 )
 add_executable(
         Client2
         src/client.cpp
-        libs/map.h
         libs/httplib.h
-        libs/map.cpp libs/handler/command.cpp libs/handler/FileReader.cpp
+        libs/map.h
+        libs/map.cpp
+        libs/handler/FileReader.h libs/handler/command.h libs/handler/command.cpp
 )
 add_executable(
         Client3
         src/client.cpp
-        libs/map.h
         libs/httplib.h
-        libs/map.cpp libs/handler/command.cpp libs/handler/FileReader.cpp
+        libs/map.h
+        libs/map.cpp
+        libs/handler/FileReader.h libs/handler/command.h libs/handler/command.cpp
 )
 add_executable(
         Client4
         src/client.cpp
-        libs/map.h
         libs/httplib.h
-        libs/map.cpp libs/handler/command.cpp libs/handler/FileReader.cpp
+        libs/map.h
+        libs/map.cpp
+        libs/handler/FileReader.h libs/handler/command.h libs/handler/command.cpp
 )
