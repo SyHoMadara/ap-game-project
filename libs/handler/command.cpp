@@ -71,6 +71,8 @@ bool Command::execute() {
         auto number = split(command.substr(5,endInd), ",");
         location.first = std::stoi(number[0]);
         location.second = std::stoi(number[1]);
+        location.first--;
+        location.second--;
         if(is_up){
             return board->wall(playerNumber,"up");
         } else {

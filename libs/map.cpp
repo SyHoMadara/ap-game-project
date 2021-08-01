@@ -27,13 +27,20 @@ void Board::setEmptyMap() {
 }
 
 void Board::printMap() {
+    printf(" ");
+    for (int i = 0; i < 11; ++i) {
+        printf(" %2d",i+1);
+    }
+    cout<<'\n';
     for (int i = 0; i < 11; i++) {
+        printf("%2d",i+1);
         for (int j = 0; j < 11; j++) {
-            cout << mat[i][j] << ' ';
+            cout << " " << mat[i][j] << ' ';
         }
         if (i != 10)
             cout << "\n";
     }
+    cout<<'\n';
     return;
 }
 
