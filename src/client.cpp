@@ -49,7 +49,7 @@ void startGame(string username, httplib::Client &cli) {
     while (true) {
         //update board
         update(cli, username);
-        if (cli.Post("/my_turn", playerNumber, "text/plain")->body == "true"){
+        if (cli.Post("/my_turn", playerNumber, "text/plain")->body == "true") {
             // play and get result
             string resultOfPlay;
             do {
@@ -61,25 +61,26 @@ void startGame(string username, httplib::Client &cli) {
                 }
             } while (resultOfPlay != "true");
         }
-        if (currentBoard.mat[5][5] <= '4' && currentBoard.mat[5][5]>='1'){
+        if (currentBoard.mat[5][5] <= '4' && currentBoard.mat[5][5] >= '1') {
             cout << "game hase been ended" << endl;
             break;
         }
     }
-    if (currentBoard.mat[5][5] == playerNumber[0]){
+    if (currentBoard.mat[5][5] == playerNumber[0]) {
         cout << "you are winner" << endl;
     } else {
         cout << "you loosing game" << endl;
     }
 }
 
-string chooseCommand(){
+string chooseCommand() {
     cout << "1.move up" << endl;
     cout << "2.move down" << endl;
     cout << "3.move right" << endl;
     cout << "4.move left" << endl;
     cout << "5.put wall" << endl;
     int chosenNumb;
+    string s;
     cout << "your command : ";
     cin >> chosenNumb;
     switch (chosenNumb) {
@@ -92,7 +93,10 @@ string chooseCommand(){
         case 4:
             return "left";
         case 5:
-            cout << "enter location as format (8,10)"
+            cout << "enter location as format (8,10)up or down\n    ";
+            cin >> s;
+            return "wall" + s;
+
     }
 
 }
