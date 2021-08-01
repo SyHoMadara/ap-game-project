@@ -223,7 +223,6 @@ bool Board::wall( char player, string move_like,int row , int column) {
             return false;
         }
     }
-    return true;
 }
 
 string Board::convertBoardToString() {

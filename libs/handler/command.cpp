@@ -74,9 +74,9 @@ bool Command::execute() {
         location.first--;
         location.second--;
         if(is_up){
-            return board->wall(playerNumber,"up");
+            return board->wall(playerNumber,"up",location.first, location.second);
         } else {
-            return board->wall(playerNumber,"left") ;
+            return board->wall(playerNumber,"left",location.first, location.second) ;
         }
 
 
