@@ -105,5 +105,5 @@ void startGame() {
     turn = 0;
     cout << "Game is starting" << endl;
     board = &Board::currentBoard;
-    board->setEmptyMap();
+    board->createBoard(4);
 }
