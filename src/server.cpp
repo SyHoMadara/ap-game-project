@@ -18,18 +18,19 @@ using namespace std;
 const char *const domain = "127.0.0.1";
 const string port_str = "8000";
 const long long port = 8000;
-Board *board;
+Board *board ;
+
 int turn = 0;
 
 string playerIdGenerator(int numberOfConnected);
 
 void startGame();
-
+bool  isGameStart = false;
 int main() {
     httplib::Server svr;
     int numberOfPlayers = 4;
     int numberOfConnected = 0;
-    bool  isGameStart = false;
+
     string players[numberOfPlayers];
     board = &Board::currentBoard;
 
@@ -106,4 +107,5 @@ void startGame() {
     cout << "Game is starting" << endl;
     board = &Board::currentBoard;
     board->createBoard(4);
+    isGameStart = true ;
 }

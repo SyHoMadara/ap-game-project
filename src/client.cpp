@@ -46,7 +46,7 @@ int main() {
 }
 
 void startGame(string username, httplib::Client &cli) {
-    for (int i = 0; i < 3e9; ++i);
+    for (int i = 0; i < 1e9; ++i);
     while (true) {
         //update board
         update(cli, username);
@@ -113,9 +113,7 @@ string play(httplib::Client &cli, string username) {
 void update(httplib::Client &cli, string username) {
     string update = username.append("_update");
     auto res = cli.Get("/update");
-    do {
-        res = cli.Get("/update");
-    } while (res->status != HTTP_200_OK);
+
     currentBoard.convertStringToBoard(res->body);
     system("clear");
     currentBoard.printMap();
