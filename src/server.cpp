@@ -82,7 +82,7 @@ int main() {
     });
 
     svr.Post("/my_turn", [&](const httplib::Request &req, httplib::Response &res) {
-        if (req.body[0] == to_string(turn+1)[0]){
+        if (req.body[0] == to_string(turn+1)[0] && isGameStart){
             res.body = "true";
         } else {
             res.body = "false";

@@ -46,25 +46,26 @@ int main() {
 }
 
 void startGame(string username, httplib::Client &cli) {
+    for (int i = 0; i < 3e9; ++i);
     while (true) {
         //update board
         update(cli, username);
-        if (cli.Post("/my_turn", playerNumber, "text/plain")->body == "true") {
-            // play and get result
-            string resultOfPlay;
-            do {
-                resultOfPlay = play(cli, username);
-                if (resultOfPlay == "true") {
-                    cout << "your move done!" << endl;
-                } else if (resultOfPlay == "false") {
-                    cout << "foul move" << endl;
-                }
-            } while (resultOfPlay != "true");
-        }
+        // play and get result
+        while (cli.Post("/my_turn", playerNumber, "text/plain")->body != "true");
+        string resultOfPlay;
+        do {
+            resultOfPlay = play(cli, username);
+            if (resultOfPlay == "true") {
+                cout << "your move done!" << endl;
+            } else if (resultOfPlay == "false") {
+                cout << "foul move" << endl;
+            }
+        } while (resultOfPlay != "true");
         if (currentBoard.mat[5][5] <= '4' && currentBoard.mat[5][5] >= '1') {
             cout << "game hase been ended" << endl;
             break;
         }
+        system("clear");
     }
     if (currentBoard.mat[5][5] == playerNumber[0]) {
         cout << "you are winner" << endl;
@@ -96,7 +97,8 @@ string chooseCommand() {
             cout << "enter location as format (8,10)up or down\n    ";
             cin >> s;
             return "wall" + s;
-
+        default :
+            return "false";
     }
 
 }

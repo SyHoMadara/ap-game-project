@@ -40,6 +40,7 @@ void Board::printMap() {
         if (i != 10)
             cout << "\n";
     }
+    cout<<'\n';
     return;
 }
 
