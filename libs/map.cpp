@@ -171,21 +171,18 @@ bool Board::moveRight( char player) {
     }
 }
 
-bool Board::validWall( char player, string move_like) {
+bool Board::validWall( char player, string move_like , int row , int column) {
     if (move_like == "up" || move_like == "down") {
-        int *arr = new int[2];
-        arr = findPlayer(player);
-        if (arr[0] == 0 || arr[0] == 10) {
+
+        if (row == 0 || row== 10) {
             return false;
-        } else if (mat[arr[0] - 1][arr[1]] != '-' || mat[arr[0] + 1][arr[1]] != '-') {
+        } else if (mat[row][column] != '-' || mat[row+1][column] != '-' || mat[row-1][column] != '-') {
             return false;
         }
     } else if (move_like == "left" || move_like == "right") {
-        int *arr = new int[2];
-        arr = findPlayer(player);
-        if (arr[1] == 0 || arr[1] == 10) {
+        if (column == 0 || column == 10) {
             return false;
-        } else if (mat[arr[0]][arr[1] + 1] != '-' || mat[arr[0]][arr[1] - 1] != '-') {
+        } else if (mat[row][column] != '-' || mat[row][column-1] != '-' || mat[row][column+1] != '-') {
             return false;
         }
     } else {
@@ -196,24 +193,23 @@ bool Board::validWall( char player, string move_like) {
 }
 
 //wall
-bool Board::wall( char player, string move_like) {
-    int *arr = new int[2];
-    arr = findPlayer(player);
+bool Board::wall( char player, string move_like,int row , int column) {
+
     if (move_like == "up" || move_like == "down") {
-        if (validWall( player, move_like)) {
-            mat[arr[0]][arr[1]] = 'w';
-            mat[arr[0] + 1][arr[1]] = 'w';
-            mat[arr[0] - 1][arr[1]] = 'w';
+        if (validWall( player, move_like , row , column)) {
+            mat[row][column] = 'w';
+            mat[row+ 1][column] = 'w';
+            mat[row - 1][column] = 'w';
             return true;
         } else {
             cerr << "you cant put a wall in this section";
             return false ;
         }
     } else {
-        if (validWall( player, move_like)) {
-            mat[arr[0]][arr[1] + 1] = 'w';
-            mat[arr[0]][arr[1] + 1] = 'w';
-            mat[arr[0]][arr[1] - 1] = 'w';
+        if (validWall( player, move_like,row , column)) {
+            mat[row][ column] = 'w';
+            mat[row][ column + 1] = 'w';
+            mat[row][ column- 1] = 'w';
             return true;
         } else {
             cerr << "you cant put a wall in this section";

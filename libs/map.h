@@ -33,9 +33,9 @@ public:
 
     bool moveRight(char player);
 
-    bool validWall( char player, string move_like);
+    bool validWall( char player, string move_like , int row , int column);
 
-    bool wall( char player, string move_like);
+    bool wall( char player, string move_like ,int row , int column);
 
     string convertBoardToString();
     void convertStringToBoard(const string& board);
